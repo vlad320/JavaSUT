@@ -45,9 +45,6 @@ public class Main {
 
     // Метод для поиска минимального элемента в массиве
     public static int findMinElement(List<Integer> arr) {
-        if (arr == null || arr.isEmpty()) {
-            throw new IllegalArgumentException("The input list cannot be null or empty.");
-        }
 
         int min = arr.getFirst();
         for (int i = 1; i < arr.size(); i++) {
