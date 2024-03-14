@@ -45,10 +45,10 @@ public class Main {
 
     // Метод для поиска минимального элемента в массиве
   public static int findMinElement(int[] arr) {
-        int min = arr[0];
-        for (int i = 1; i < arr.length; i++) {
-            if (arr[i] < min) {
-                min = arr[i];
+        int min = arr.getFirst();
+        for (int i = 1; i < arr.size(); i++) {
+            if (arr.get(i) < min) {
+                min = arr.get(i);
             }
         }
         return min;
