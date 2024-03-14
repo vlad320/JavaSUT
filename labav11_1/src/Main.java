@@ -44,7 +44,7 @@ public class Main {
     }
 
     // Метод для поиска минимального элемента в массиве
-  public static int findMinElement(int[] arr) {
+    public static int findMinElement(List<Integer> arr) {
         int min = arr.getFirst();
         for (int i = 1; i < arr.size(); i++) {
             if (arr.get(i) < min) {
