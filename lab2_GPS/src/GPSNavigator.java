@@ -5,7 +5,8 @@ public class GPSNavigator {
     // Другие свойства
     private String manufacturer;
     private String model;
-
+    private int price;
+    private int totalSum;
     // Конструктор по умолчанию
     public GPSNavigator() {
         this("", "");
@@ -41,5 +42,23 @@ public class GPSNavigator {
 
     public void setModel(String model) {
         this.model = model;
+    }
+    public void setPrice(int price) {
+        this.price = price;
+    }
+    public int getPrice() {
+        return price;
+    }
+    public void setTotalSum(int totalSum) {
+        this.totalSum = totalSum;
+    }
+    public int getTotalSum() {
+        return totalSum;
+    }
+
+    public GPSNavigator(String manufacturer, String model, int price) {
+        this.manufacturer = manufacturer;
+        this.model = model;
+        this.price = price;
     }
 }
