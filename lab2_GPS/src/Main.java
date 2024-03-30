@@ -66,6 +66,12 @@ public class Main {
         String model = scanner.next();
         System.out.println("Введите цену:");
         int price = scanner.nextInt();
+
+                if (price < 0) {
+            System.out.println("Цена не может быть отрицательной.");
+            return;
+        }
+        
         navigators.add(new GPSNavigator(manufacturer, model, price));
     }
     private static void displayProperties(ArrayList<GPSNavigator> navigators) {
