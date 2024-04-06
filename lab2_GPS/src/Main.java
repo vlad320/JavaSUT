@@ -1,18 +1,12 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
-
 public class Main {
-
-    static ArrayList<GPSNavigator> navigators = new ArrayList<>();
-
+    private static ArrayList<GPSNavigator> navigators = new ArrayList<>();
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
         while (true) {
             printMenu();
             int choice = scanner.nextInt();
-
             switch (choice) {
                 case 1:
                     createObject(navigators, scanner);
@@ -30,7 +24,7 @@ public class Main {
                     calculateDevicesCount(navigators);
                     break;
                 case 6:
-                    int totalSum = calculateTotalSum();
+                    float totalSum = calculateTotalSum();
                     System.out.println("Общая сумма: " + totalSum);
                     break;
                 case 7:
@@ -47,7 +41,6 @@ public class Main {
             }
         }
     }
-
     private static void printMenu() {
         System.out.println("Меню:");
         System.out.println("1. Создать новый объект");
@@ -59,22 +52,13 @@ public class Main {
         System.out.println("7. Вычислить сумму по производителю");
         System.out.println("8. Выход из программы");
     }
-
-    private static void exitProgram() {
-        System.out.println("Программа завершена.");
-        System.exit(0); // Завершить программу
-    }
-
-
-
-
-     static void createObject(ArrayList<GPSNavigator> navigators, Scanner scanner) {
+    private static void createObject(ArrayList<GPSNavigator> navigators, Scanner scanner) {
         System.out.println("Введите производителя:");
         String manufacturer = scanner.next();
         System.out.println("Введите модель:");
         String model = scanner.next();
         System.out.println("Введите цену:");
-        int price = scanner.nextInt();
+        float price = scanner.nextFloat();
 
         if (price < 0) {
             System.out.println("Цена не может быть отрицательной.");
@@ -83,34 +67,26 @@ public class Main {
 
         navigators.add(new GPSNavigator(manufacturer, model, price));
     }
-
-
-    static void displayProperties(ArrayList<GPSNavigator> navigators) {
-        System.out.println("| ## | Производитель   | Модель          | Цена            |");
+    private static void displayProperties(ArrayList<GPSNavigator> navigators) {
+        System.out.println("| ## | Производитель   | Модель          | Цена       |");
         for (int i = 0; i < navigators.size(); i++) {
             GPSNavigator navigator = navigators.get(i);
-            System.out.printf("| %2d | %-15s | %-15s | %-15s |\n",
+            System.out.printf("| %2d | %-15s | %-15s | %-10s |\n",
                     i + 1, navigator.getManufacturer(), navigator.getModel(), navigator.getPrice());
         }
     }
-
-    static void changeProperty(ArrayList<GPSNavigator> navigators, Scanner scanner) {
+    private static void changeProperty(ArrayList<GPSNavigator> navigators, Scanner scanner) {
         System.out.println("Введите номер элемента (1-" + navigators.size() + "):");
         int index = scanner.nextInt() - 1;
-
         if (index < 0 || index >= navigators.size()) {
             System.out.println("Неверный индекс.");
             return;
         }
-
         GPSNavigator navigator = navigators.get(index);
-
         System.out.println("Выберите свойство для изменения:");
         System.out.println("1. Производитель");
         System.out.println("2. Модель");
-        System.out.println("3. Цену");
         int propertyChoice = scanner.nextInt();
-
         switch (propertyChoice) {
             case 1:
                 System.out.println("Введите новое имя производителя:");
@@ -120,35 +96,20 @@ public class Main {
                 System.out.println("Введите новую модель:");
                 navigator.setModel(scanner.next());
                 break;
-            case 3:
-                System.out.println("Введите новую цену:");
-                navigator.setPrice(Integer.parseInt(scanner.next()));
             default:
                 System.out.println("Неверный выбор.");
                 break;
         }
     }
-
-    static int calculateTotalSum() {
-        int totalSum = 0; // Объявление переменной
-        for (GPSNavigator navigator : Main.navigators) {
-            totalSum += navigator.getPrice();
-        }
-        return totalSum;
-    }
-
-    static void removeObjectFromArray(ArrayList<GPSNavigator> navigators, Scanner scanner) {
+    private static void removeObjectFromArray(ArrayList<GPSNavigator> navigators, Scanner scanner) {
         System.out.println("Введите номер элемента (1-" + navigators.size() + "):");
         int index = scanner.nextInt() - 1;
-
         if (index < 0 || index >= navigators.size()) {
             System.out.println("Неверный индекс.");
             return;
         }
-
         System.out.println("Вы уверены, что хотите удалить элемент " + (index + 1) + "? (y/n)");
         String confirmation = scanner.next();
-
         if (confirmation.equalsIgnoreCase("y")) {
             navigators.remove(index);
             System.out.println("Элемент " + (index + 1) + " удален.");
@@ -156,26 +117,26 @@ public class Main {
             System.out.println("Удаление отменено.");
         }
     }
-
-
-    static void calculateDevicesCount(ArrayList<GPSNavigator> navigators) {
+    private static void calculateDevicesCount(ArrayList<GPSNavigator> navigators) {
         Scanner scanner = new Scanner(System.in);
-
         System.out.println("Введите имя производителя:");
         String manufacturer = scanner.nextLine();
-
         int deviceCount = 0;
         for (GPSNavigator navigator : navigators) {
             if (navigator.getManufacturer().equals(manufacturer)) {
                 deviceCount++;
             }
         }
-
         System.out.println("Количество устройств производителя " + manufacturer + ": " + deviceCount);
     }
-
-
-    static int calculateSumByManufacturer(String manufacturer) {
+    public static float calculateTotalSum() {
+        float totalSum = 0; // Объявление переменной
+        for (GPSNavigator navigator : navigators) {
+            totalSum += navigator.getPrice();
+        }
+        return totalSum;
+    }
+    public static int calculateSumByManufacturer(String manufacturer) {
         int sum = 0;
         for (GPSNavigator navigator : navigators) {
             if (navigator.getManufacturer().equals(manufacturer)) {
@@ -184,7 +145,8 @@ public class Main {
         }
         return sum;
     }
-
-
+    private static void exitProgram() {
+        System.out.println("Программа завершена.");
+        System.exit(0); // Завершить программу
+    }
 }
-
