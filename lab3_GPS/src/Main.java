@@ -40,10 +40,10 @@ public class Main {
                     System.out.println("Сумма по производителю " + manufacturer + ": " + sumByManufacturer);
                     break;
                 case 8:
-                    readFromFile(navigators, scanner);
+                    FileManager.readFromFile(navigators, scanner);
                     break;
                 case 9:
-                    saveToFile(navigators, scanner);
+                    FileManager.saveToFile(navigators, scanner);
                     break;
                 case 10:
                     exitProgram();
@@ -53,68 +53,8 @@ public class Main {
             }
         }
     }
-    private static void saveToFile(ArrayList<GPSNavigator> navigators,Scanner scanner) {
-        System.out.println("Введите имя файла для сохранения данных:");
-        String filename = scanner.next();
-        try {
-            FileWriter writer = new FileWriter(filename);
-            for (GPSNavigator navigator : navigators) {
-                writer.write(navigator.getManufacturer() + "," + navigator.getModel() + "," + navigator.getPrice() + "\n");
-            }
-            writer.close();
-            System.out.println("Данные успешно сохранены в файл.");
-        } catch (IOException e) {
-            System.out.println("Ошибка при сохранении данных в файл.");
-        }
-    }
-    private static void readFromFile(ArrayList<GPSNavigator> navigators, Scanner scanner) {
-        System.out.println("Введите имя файла:");
-        String filename = scanner.next();
-        try {
-            File file = new File(filename);
-            Scanner fileScanner = new Scanner(file);
-            while (fileScanner.hasNextLine()) {
-                String line = fileScanner.nextLine();
-                GPSNavigator navigator = parseLineToNavigator(line);
-              if (navigator != null && !isDuplicateNavigator(navigator, navigators)) {
-                    navigators.add(navigator);
-               }
-            }
-            System.out.println("Данные успешно загружены из файла.");
-        } catch (FileNotFoundException e) {
-            System.out.println("Файл не найден.");
-        }
-    }
 
-    // функция чтобы не дублировалось
-    private static boolean isDuplicateNavigator(GPSNavigator navigator, ArrayList<GPSNavigator> navigators) {
-        for (GPSNavigator existingNavigator : navigators) {
-            if (existingNavigator.getManufacturer().equals(navigator.getManufacturer()) &&
-                    existingNavigator.getModel().equals(navigator.getModel()) &&
-                    existingNavigator.getPrice() == navigator.getPrice()) {
-                System.out.println("Навигатор с такими же данными уже существует.");
-                return true;
-            }
-        }
-        return false;
-    }
-    private static GPSNavigator parseLineToNavigator(String line) {
-        String[] parts = line.split(",");
-        if (parts.length != 3) {
-            System.out.println("Неверный формат строки: " + line);
-            return null;
-        }
 
-        try {
-            String manufacturer = parts[0].trim();
-            String model = parts[1].trim();
-            float price = Float.parseFloat(parts[2].trim());
-            return new GPSNavigator(manufacturer, model, price);
-        } catch (NumberFormatException e) {
-            System.out.println("Ошибка преобразования числа в строке: " + line);
-            return null;
-        }
-    }
     private static void printMenu() {
         System.out.println("Меню:");
         System.out.println("1. Создать новый объект");
