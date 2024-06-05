@@ -1,5 +1,4 @@
 
-
 public class CarNavigator extends Navigator {
 
     public CarNavigator(String brand, String nameModel, String currentDestination) {
@@ -15,6 +14,10 @@ public class CarNavigator extends Navigator {
 
     @Override
     public String getCurrentLocation() {
-        return "Автомобильный навигатор: Текущее местоположение автомобиля";
+        return "Атомобильный навигатор: Текущее местоположение для "  + " - " + getCurrentDestination();
+    }
+    @Override
+    public String getType() {
+        return "Car";
     }
 }

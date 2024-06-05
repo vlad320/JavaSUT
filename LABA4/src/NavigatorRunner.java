@@ -1,5 +1,6 @@
 
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -22,18 +23,30 @@ public class NavigatorRunner {
                     addCarNavigator(navigators, dataEntry);
                     break;
                 case 3:
-                    printNavigators(navigators);
+                    addCompasNavigator(navigators, dataEntry);
                     break;
                 case 4:
-                    navigateToByName(navigators, dataEntry);
+                    printNavigators(navigators);
                     break;
                 case 5:
-                    getCurrentLocationByName(navigators, dataEntry);
+                    navigateToByName(navigators, dataEntry);
+                    break;
                 case 6:
-                    updateNavigatorByName(navigators, dataEntry);
+                    getCurrentLocationByName(navigators, dataEntry);
+                    break;
                 case 7:
-                    printRouteHistoryByName(navigators, dataEntry);
+                    updateNavigatorByName(navigators, dataEntry);
+                    break;
                 case 8:
+                    printRouteHistoryByName(navigators, dataEntry);
+                    break;
+                case 9:
+                    readNavigatorsFromFile(navigators, dataEntry);
+                    break;
+                case 10:
+                    writeNavigatorsToFile(navigators, dataEntry);
+                    break;
+                case 11:
                     exit = true;
                     break;
                 default:
@@ -46,12 +59,15 @@ public class NavigatorRunner {
     public static void printMenu() {
         System.out.println("1. Добавить GPS-навигатор");
         System.out.println("2. Добавить автомобильный навигатор");
-        System.out.println("3. Отобразить все навигаторы");
-        System.out.println("4. Проложить маршрут по названию модели");
-        System.out.println("5. Получить текущее местоположение по названию модели");
-        System.out.println("6. Изменить навигатор по названию модели");
-        System.out.println("7. Показать историю маршрутов по названию модели");
-        System.out.println("8. Выход из программы");
+        System.out.println("3. Добавить компас");
+        System.out.println("4. Отобразить все навигаторы");
+        System.out.println("5. Проложить маршрут по названию модели");
+        System.out.println("6. Получить текущее местоположение по названию модели");
+        System.out.println("7. Изменить навигатор по названию модели");
+        System.out.println("8. Показать историю маршрутов по названию модели");
+        System.out.println("9. Считать навигаторы из файла");
+        System.out.println("10. Сохранить навигаторы в файл");
+        System.out.println("11. Выход из программы");
         System.out.print("Выберите действие: ");
         System.out.flush();
     }
@@ -76,6 +92,17 @@ public class NavigatorRunner {
         String startPoint = dataEntry.next();
         navigators.add(new CarNavigator(brand, nameModel, startPoint));
         System.out.println("Автомобильный навигатор добавлен");
+    }
+
+    public static void addCompasNavigator(List<Navigator> navigators, Scanner dataEntry) {
+        System.out.print("Введите бренд компаса: ");
+        String brand = dataEntry.next();
+        System.out.print("Введите модель компаса: ");
+        String nameModel = dataEntry.next();
+        System.out.print("Введите начальную точку: ");
+        String startPoint = dataEntry.next();
+        navigators.add(new Compas(brand, nameModel, startPoint));
+        System.out.println("Компас добавлен");
     }
 
     public static void printNavigators(List<Navigator> navigators) {
@@ -137,6 +164,8 @@ public class NavigatorRunner {
                     navigators.set(i, new GPSNavigator(newBrand, newNameModel, newDestination));
                 } else if (navigator instanceof CarNavigator) {
                     navigators.set(i, new CarNavigator(newBrand, newNameModel, newDestination));
+                } else if (navigator instanceof Compas) {
+                    navigators.set(i, new Compas(newBrand, newNameModel, newDestination));
                 }
 
                 System.out.println("Навигатор изменен");
@@ -162,5 +191,33 @@ public class NavigatorRunner {
         }
 
         System.out.println("Навигатор с моделью " + nameModel + " не найден.");
+    }
+    public static void writeNavigatorsToFile(List<Navigator> navigators, Scanner dataEntry) {
+        System.out.print("Введите имя файла: ");
+        String filename = dataEntry.next();
+
+        try (PrintWriter pw = new PrintWriter(new FileWriter(filename))) {
+            for (Navigator navigator : navigators) {
+                pw.println(navigator.toDataString());
+            }
+            System.out.println("Навигаторы успешно сохранены в файл.");
+        } catch (IOException e) {
+            System.out.println("Ошибка при сохранении навигаторов в файл: " + e.getMessage());
+        }
+    }
+    public static void readNavigatorsFromFile(List<Navigator> navigators, Scanner dataEntry) {
+        System.out.print("Введите имя файла: ");
+        String filename = dataEntry.next();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                Navigator navigator = Navigator.fromDataString(line);
+                navigators.add(navigator);
+            }
+            System.out.println("Навигаторы успешно загружены из файла.");
+        } catch (IOException e) {
+            System.out.println("Ошибка при загрузке навигаторов из файла: " + e.getMessage());
+        }
     }
 }

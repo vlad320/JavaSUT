@@ -15,6 +15,10 @@ public class GPSNavigator extends Navigator {
 
     @Override
     public String getCurrentLocation() {
-        return "GPS-навигатор: Текущее местоположение по GPS";
+        return "GPS-навигатор: Текущее местоположение для "  + " - " + getCurrentDestination();
+    }
+    @Override
+    public String getType() {
+        return "GPS";
     }
 }
